@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package perbankan;
+package com.mycompany.bankapp.entity;
 
 /**
  *
  * @author mamir
  */
 public class Tabungan {
-    private int saldo;
+    private int saldo = 0;
     
     public Tabungan(int saldo){
         this.saldo = saldo;

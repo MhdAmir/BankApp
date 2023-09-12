@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package perbankan;
+package com.mycompany.bankapp.entity;
 
 /**
  *
@@ -11,7 +11,7 @@ package perbankan;
 public class Nasabah {
     private String namaAwal;
     private String namaAkhir;
-    Tabungan tabungan;
+    private Tabungan tabungan;
     
     public Nasabah(String namaAwal, String namaAkhir){
         this.namaAwal = namaAwal;

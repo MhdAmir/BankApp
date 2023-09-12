@@ -1,30 +1,58 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package perbankan_view;
+package com.mycompany.bankapp.view;
 
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import com.mycompany.bankapp.BankApp;
+import com.mycompany.bankapp.entity.*;
 import javax.swing.table.DefaultTableModel;
-import perbankan.*;
 
 /**
  *
  * @author mamir
  */
-public class BankView extends javax.swing.JFrame {
-
-    public Bank bank = new Bank();
-
+public class AdminView extends javax.swing.JPanel {
+    private BankApp app;
     /**
-     * Creates new form BankView
+     * Creates new form AdminView
+     * @param app
      */
-    public BankView() {
+    public AdminView(BankApp app) {
+        this.app = app;
         initComponents();
         DataView();
     }
+    private void clear() {
+        inputFirstName.setText("");
+        inputLastName.setText("");
+        inputBalance.setText("");
 
+        btnAdd.setText("Add");
+    }
+    private void DataView(){
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("first name");
+        model.addColumn("last name");
+        model.addColumn("balance");
+
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        model.setRowCount(0);
+        if (app.bank.getJumlahNasabah() > 0) {
+
+            for (int i = 0; i < app.bank.getJumlahNasabah(); i++) {
+                Object[] data = {
+                    app.bank.getNasabah(i).getNamaAwal(),
+                    app.bank.getNasabah(i).getNamaAkhir(),
+                    app.bank.getNasabah(i).getTabungan().getSaldo()
+                };
+                model.addRow(data);
+            }
+        }
+        tblOutput.setModel(model);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,9 +62,6 @@ public class BankView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        inputFirstName = new javax.swing.JTextField();
         inputLastName = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -46,18 +71,10 @@ public class BankView extends javax.swing.JFrame {
         inputBalance = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblOutput = new javax.swing.JTable();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("First Name");
-
-        jLabel2.setText("Last Name");
-
-        inputFirstName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputFirstNameActionPerformed(evt);
-            }
-        });
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        inputFirstName = new javax.swing.JTextField();
+        btnLogOut = new javax.swing.JButton();
 
         inputLastName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,12 +99,22 @@ public class BankView extends javax.swing.JFrame {
         });
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Balance");
 
         inputBalance.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputBalanceActionPerformed(evt);
+            }
+        });
+        inputBalance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                inputBalanceKeyTyped(evt);
             }
         });
 
@@ -104,14 +131,27 @@ public class BankView extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tblOutput);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        jLabel1.setText("First Name");
+
+        jLabel2.setText("Last Name");
+
+        inputFirstName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputFirstNameActionPerformed(evt);
+            }
+        });
+
+        btnLogOut.setText("Log Out");
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(249, 249, 249))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -134,14 +174,22 @@ public class BankView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(234, 234, 234)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogOut)
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(btnLogOut))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdd)
@@ -157,18 +205,11 @@ public class BankView extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
                         .addComponent(inputBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
         );
-
-        setSize(new java.awt.Dimension(607, 641));
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void inputFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFirstNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputFirstNameActionPerformed
 
     private void inputLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputLastNameActionPerformed
         // TODO add your handling code here:
@@ -177,127 +218,97 @@ public class BankView extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         String firstName = inputFirstName.getText();
         String lastName = inputLastName.getText();
-        int balance;
+        int balance = 0;
+
         if ("".equals(inputBalance.getText())) {
             balance = 0;
         } else {
-            balance = Integer.parseInt(inputBalance.getText());
-        }
-
-        if("Add".equals(btnAdd.getText())){
-            bank.tambahNasabah(firstName, lastName);
-            bank.getNasabah(bank.getJumlahNasabah() - 1).
-                setTabungan(new Tabungan(balance));
-        }else{
-            bank.editNasabah(tblOutput.getSelectedRow(), 
-                    new Nasabah(firstName, lastName, new Tabungan(balance)));
-        }
-        
-        DataView();
-        clear();
-
-    }//GEN-LAST:event_btnAddActionPerformed
-    private void DataView() {
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("first name");
-        model.addColumn("last name");
-        model.addColumn("balance");
-
-        model.getDataVector().removeAllElements();
-        model.fireTableDataChanged();
-        model.setRowCount(0);
-        if (bank.getJumlahNasabah() > 0) {
-
-            for (int i = 0; i < bank.getJumlahNasabah(); i++) {
-                Object[] data = {
-                    bank.getNasabah(i).getNamaAwal(),
-                    bank.getNasabah(i).getNamaAkhir(),
-                    bank.getNasabah(i).getTabungan().getSaldo()
-                };
-                model.addRow(data);
-                tblOutput.setModel(model);
+            try{
+                balance = Integer.parseInt(inputBalance.getText());
+            }
+            catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(this, "Can't input "
+                    + "string in balance");
             }
         }
-    }
+        if ("".equals(firstName) || "".equals(lastName)) {
+            JOptionPane.showMessageDialog(this, "Can't input "
+                + "blank name");
+        } else {
+            if ("Add".equals(btnAdd.getText())) {
 
-    private void clear() {
-        inputFirstName.setText("");
-        inputLastName.setText("");
-        inputBalance.setText("");
-        
-        btnAdd.setText("Add");
-    }
-    private void inputBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputBalanceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputBalanceActionPerformed
+                app.bank.tambahNasabah(firstName, lastName);
+                app.bank.getNasabah(app.bank.getJumlahNasabah() - 1).
+                setTabungan(new Tabungan(balance));
+            } else {
+                app.bank.editNasabah(tblOutput.getSelectedRow(),
+                    new Nasabah(firstName, lastName,
+                        new Tabungan(balance)));
+            }
+        }
+
+        DataView();
+        clear();
+    }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (inputFirstName.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Choose "
-                    + "data ");
-
+            JOptionPane.showMessageDialog(this, "Choose the"
+                + "data, that you want to delete");
         } else {
             int answer = JOptionPane.showConfirmDialog(null,
-                    "Are you sure delete this data?");
+                "Are you sure delete this data?");
             if (answer == 0) {
-                bank.hapusNasabah(tblOutput.getSelectedRow());
+                app.bank.hapusNasabah(tblOutput.getSelectedRow());
                 DataView();
                 clear();
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void inputBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputBalanceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputBalanceActionPerformed
+
     private void tblOutputMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOutputMouseClicked
         // TODO add your handling code here
         inputFirstName.setText(tblOutput.getValueAt(tblOutput.
-                getSelectedRow(), 0).toString());
-        inputLastName.setText(tblOutput.getValueAt(tblOutput.
-                getSelectedRow(), 1).toString());
+            getSelectedRow(), 0).toString());
+    inputLastName.setText(tblOutput.getValueAt(tblOutput.
+        getSelectedRow(), 1).toString());
         inputBalance.setText(tblOutput.getValueAt(tblOutput.
-                getSelectedRow(), 2).toString());
+            getSelectedRow(), 2).toString());
 
-        btnAdd.setText("Change");
+    btnAdd.setText("Change");
     }//GEN-LAST:event_tblOutputMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BankView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BankView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BankView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BankView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void inputFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputFirstNameActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BankView().setVisible(true);
-            }
-        });
-    }
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        app.showLoginView();
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void inputBalanceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBalanceKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(!Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_inputBalanceKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JTextField inputBalance;
     private javax.swing.JTextField inputFirstName;
     private javax.swing.JTextField inputLastName;

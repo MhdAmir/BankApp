@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package perbankan;
+package com.mycompany.bankapp.entity;
 
 import java.util.LinkedList;
 
@@ -11,9 +11,11 @@ import java.util.LinkedList;
  * @author mamir
  */
 public class Bank {
-
-    LinkedList<Nasabah> nasabah;
-
+    private LinkedList<Nasabah> nasabah;
+    
+    private String adminNamaAwal = "admin";
+    private String adminNamaAkhir = "admin";
+    
     public Bank() {
     }
 
@@ -21,7 +23,7 @@ public class Bank {
         if (nasabah == null) {
             nasabah = new LinkedList<>();
         }
-        nasabah.add(new Nasabah(namaAwal, namaAkhir));
+        nasabah.add(new Nasabah(namaAwal, namaAkhir, new Tabungan(0)));
     }
 
     public int getJumlahNasabah() {
@@ -29,7 +31,6 @@ public class Bank {
             return 0;
         } else {
             return nasabah.size();
-
         }
     }
 
@@ -40,8 +41,30 @@ public class Bank {
     public void hapusNasabah(int indeks) {
         nasabah.remove(indeks);
     }
-    
+
     public void editNasabah(int indeks, Nasabah nasabah) {
-        this.nasabah.set(indeks,nasabah);
+        this.nasabah.set(indeks, nasabah);
+    }
+    
+    public String getNamaAwalAdmin(){
+        return adminNamaAwal;
+    }
+    
+    public String getNamaAkhirAdmin(){
+        return adminNamaAkhir;
+    }
+    
+    public int getIndexNasabah(String namaAwal, String namaAkhir) throws Exception{
+        int i = 0;
+        for(Nasabah n :this.nasabah){
+            if(n.getNamaAwal().equals(namaAwal) && 
+                    n.getNamaAkhir().equals(namaAkhir)){
+                
+                return i;
+            }
+            i++;
+        }
+        
+        throw new Exception("not found");
     }
 }
